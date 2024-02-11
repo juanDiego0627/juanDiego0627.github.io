@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/paises.js"></script>
+    <title>Paises</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos personalizados */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+     <!-- Agregar el manifiesto -->
+     <link rel="manifest" href="/manifest.json">
+    <!-- Habilitar el Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('/service-worker.js').then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    console.error('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <form action="">
+            <div class="form-group">
+                <label for="countrySelect">País</label>
+                <select id="countrySelect" class="form-control" onchange="actualizarEstados()">
+                    <option value="" disabled selected>Seleccione un país</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="stateSelect">Estado</label>
+                <select id="stateSelect" class="form-control" onchange="actualizarMunicipios()">
+                    <option value="" disabled selected>Seleccione un estado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="municipioSelect">Municipio</label>
+                <select id="municipioSelect" class="form-control" onchange="actualizarLocalidades()">
+                    <option value="" disabled selected>Seleccione un municipio</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="localidadSelect">Localidad</label>
+                <select id="localidadSelect" class="form-control">
+                    <option value="" disabled selected>Seleccione una localidad</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="guardarValores()">Guardar Valores</button>
+            <!-- Botón para guardar valores -->
+            <button type="button" class="btn btn-danger ml-2" onclick="limpiarTabla()">Limpiar Tabla</button>
+            <!-- Botón para limpiar la tabla -->
+        </form>
+
+        <!-- Tabla para mostrar los valores seleccionados -->
+        <table id="valoresTable" class="table mt-4">
+            <thead class="thead-light">
+                <tr>
+                    <th>País</th>
+                    <th>Estado</th>
+                    <th>Municipio</th>
+                    <th>Localidad</th>
+                </tr>
+            </thead>
+            <tbody id="valoresBody">
+                <!-- Aquí se agregarán las filas dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function guardarValores() {
+            const pais = document.getElementById('countrySelect').value;
+            const estado = document.getElementById('stateSelect').value;
+            const municipio = document.getElementById('municipioSelect').value;
+            const localidad = document.getElementById('localidadSelect').value;
+
+            // Crear nueva fila en la tabla
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${pais}</td>
+                <td>${estado}</td>
+                <td>${municipio}</td>
+                <td>${localidad}</td>
+            `;
+
+            // Agregar la nueva fila a la tabla
+            const tableBody = document.getElementById('valoresBody');
+            tableBody.appendChild(newRow);
+        }
+
+        function limpiarTabla() {
+            const tableBody = document.getElementById('valoresBody');
+            tableBody.innerHTML = ''; // Eliminar el contenido de la tabla
+        }
+    </script>
+</body>
+
+</html>
